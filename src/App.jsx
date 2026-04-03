@@ -700,7 +700,7 @@ function AboutSection() {
               matters in a real enterprise POV.
             </p>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <a href="mailto:jason.moss@stylitics.com" style={{
+              <a href="mailto:jasomoss@gmail.com" style={{
                 padding: '12px 28px', borderRadius: 8,
                 background: 'linear-gradient(135deg, var(--purple), var(--pink))',
                 color: 'var(--white)', fontSize: 14, fontWeight: 600,
