@@ -546,10 +546,10 @@ function ComponentsSection() {
             }}>
               {/* Simulated WeatherSummaryBadge */}
               <div style={{
-                display: 'inline-flex', alignItems: 'center',
+                display: 'flex', alignItems: 'center',
                 gap: cfg.gap, padding: cfg.padding,
                 background: '#f4f4f4', borderRadius: 6,
-                border: '1px solid #e0e0e0', minWidth: 180
+                border: '1px solid #e0e0e0', width: '100%'
               }}>
                 <span style={{ fontSize: cfg.iconSize }}>{condition.icon}</span>
                 <div>
