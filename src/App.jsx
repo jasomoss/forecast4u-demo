@@ -268,7 +268,7 @@ function AppSection() {
           Built with IBM Carbon, deployed on Vercel.
         </p>
 
-        {/* Browser chrome wrapper */}
+        {/* App preview card */}
         <Card hover={false} style={{ overflow: 'hidden', borderRadius: 16 }}>
           {/* Browser bar */}
           <div style={{
@@ -291,29 +291,56 @@ function AppSection() {
               </span>
             </div>
           </div>
-          {/* Iframe */}
-          <iframe
-            src="https://forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app"
-            style={{ width: '100%', height: 600, border: 'none', display: 'block' }}
-            title="Forecast4U Live App"
-          />
+          {/* Preview content */}
+          <div style={{
+            background: 'linear-gradient(160deg, #0f62fe 0%, #001d6c 100%)',
+            height: 520, display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', gap: 24,
+            padding: '40px 32px', textAlign: 'center'
+          }}>
+            <div style={{ fontSize: 64 }}>⛅</div>
+            <div>
+              <h3 style={{
+                fontSize: 36, fontWeight: 800, color: '#ffffff',
+                fontFamily: 'var(--font)', marginBottom: 8, letterSpacing: '-0.02em'
+              }}>Forecast4U</h3>
+              <p style={{
+                fontSize: 16, color: 'rgba(255,255,255,0.75)',
+                fontFamily: 'var(--font)', marginBottom: 32, maxWidth: 360
+              }}>
+                5-day weather forecasts powered by real data.<br/>
+                Enter any US ZIP code to get started.
+              </p>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                {['10001 · New York', '90210 · Beverly Hills', '60601 · Chicago', '98101 · Seattle'].map(z => (
+                  <span key={z} style={{
+                    padding: '6px 16px', borderRadius: 999,
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    color: 'rgba(255,255,255,0.8)', fontSize: 13,
+                    fontFamily: 'var(--font)'
+                  }}>{z}</span>
+                ))}
+              </div>
+            </div>
+            <a
+              href="https://forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app"
+              target="_blank" rel="noreferrer"
+              style={{
+                padding: '14px 36px', borderRadius: 10,
+                background: 'rgba(255,255,255,0.15)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.3)',
+                color: '#ffffff', fontSize: 15, fontWeight: 700,
+                textDecoration: 'none', fontFamily: 'var(--font)',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)' }}
+            >
+              Launch the App →
+            </a>
+          </div>
         </Card>
-
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
-          <a
-            href="https://forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app"
-            target="_blank" rel="noreferrer"
-            style={{
-              padding: '10px 24px', borderRadius: 8,
-              border: '1px solid var(--gray3)', background: 'transparent',
-              color: 'var(--purpleL)', fontSize: 13, fontWeight: 600,
-              textDecoration: 'none', fontFamily: 'var(--font)',
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--purpleL)'; e.currentTarget.style.background = 'rgba(124,58,237,0.08)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--gray3)'; e.currentTarget.style.background = 'transparent' }}
-          >Open in new tab ↗</a>
-        </div>
       </div>
     </section>
   )
@@ -587,7 +614,7 @@ function DocsSection() {
       desc: 'Full Builder.io-branded presentation deck for stakeholder kickoff. Architecture, success criteria, next steps.',
       tag: '9 slides',
       color: 'var(--purpleL)',
-      href: '#'
+      href: 'https://docs.google.com/presentation/d/1OSoBYjCyv8YyWQ3bW16Wcb_8-9GL16_TnQaGSc0v9B4/edit?usp=sharing'
     },
     {
       icon: '🎤',
@@ -595,7 +622,7 @@ function DocsSection() {
       desc: 'Scene-by-scene guide for the peer review session. SAY / DO / PAUSE format. Runs 20-25 minutes.',
       tag: '6 scenes',
       color: 'var(--pink)',
-      href: '#'
+      href: 'https://docs.google.com/document/d/1RXQOHTOtn0YJLaGTm-IdpOCyylCSVof1KJNIddjORDY/edit?usp=sharing'
     },
     {
       icon: '📐',
@@ -603,7 +630,7 @@ function DocsSection() {
       desc: 'Full design system artifact for WeatherSummaryBadge — anatomy, props, Carbon tokens, accessibility, stories.',
       tag: 'feature/weather-summary-badge',
       color: 'var(--green)',
-      href: '#'
+      href: 'https://docs.google.com/document/d/1qn3Ke8XyifOU0bz-LN5PjL7VCwVHhsqcbmx3jTW-Etg/edit?usp=sharing'
     },
   ]
 
@@ -636,7 +663,7 @@ function DocsSection() {
                 fontSize: 13, color: 'var(--gray1)', lineHeight: 1.7,
                 fontFamily: 'var(--font)', marginBottom: 24
               }}>{doc.desc}</p>
-              <a href={doc.href} style={{
+              <a href={doc.href} target="_blank" rel="noreferrer" style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6,
                 fontSize: 13, fontWeight: 600, color: doc.color,
                 fontFamily: 'var(--font)', textDecoration: 'none',
@@ -650,6 +677,32 @@ function DocsSection() {
         </div>
       </div>
     </section>
+  )
+}
+
+// ─── Copy Email Button ───────────────────────────────────────
+function CopyEmailButton() {
+  const [copied, setCopied] = useState(false)
+
+  const handleClick = () => {
+    navigator.clipboard.writeText('jasomoss@gmail.com').then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <button onClick={handleClick} style={{
+      padding: '12px 28px', borderRadius: 8,
+      background: copied
+        ? 'linear-gradient(135deg, #22C55E, #16A34A)'
+        : 'linear-gradient(135deg, var(--purple), var(--pink))',
+      color: 'var(--white)', fontSize: 14, fontWeight: 600,
+      fontFamily: 'var(--font)', border: 'none', cursor: 'pointer',
+      transition: 'all 0.2s'
+    }}>
+      {copied ? '✓ Email copied!' : 'Get in touch'}
+    </button>
   )
 }
 
@@ -700,12 +753,7 @@ function AboutSection() {
               matters in a real enterprise POV.
             </p>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <a href="mailto:jasomoss@gmail.com" target="_blank" rel="noreferrer" style={{
-                padding: '12px 28px', borderRadius: 8,
-                background: 'linear-gradient(135deg, var(--purple), var(--pink))',
-                color: 'var(--white)', fontSize: 14, fontWeight: 600,
-                textDecoration: 'none', fontFamily: 'var(--font)'
-              }}>Get in touch</a>
+              <CopyEmailButton />
               <a href="https://www.linkedin.com/in/jasonmoss22/" target="_blank" rel="noreferrer"
                 style={{
                   padding: '12px 28px', borderRadius: 8,
