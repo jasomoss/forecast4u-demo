@@ -296,23 +296,25 @@ function AppSection() {
             background: 'linear-gradient(160deg, #0f62fe 0%, #001d6c 100%)',
             height: 520, display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center', gap: 24,
-            padding: '40px 32px', textAlign: 'center'
+            padding: '40px 32px'
           }}>
-            <div style={{ fontSize: 64 }}>⛅</div>
-            <div>
+            <div style={{ fontSize: 64, textAlign: 'center' }}>⛅</div>
+            <div style={{ textAlign: 'center', width: '100%' }}>
               <h3 style={{
                 fontSize: 36, fontWeight: 800, color: '#ffffff',
-                fontFamily: 'var(--font)', marginBottom: 8, letterSpacing: '-0.02em'
+                fontFamily: 'var(--font)', marginBottom: 12, letterSpacing: '-0.02em',
+                textAlign: 'center'
               }}>Forecast4U</h3>
               <p style={{
                 fontSize: 16, color: 'rgba(255,255,255,0.75)',
-                fontFamily: 'var(--font)', marginBottom: 32, maxWidth: 400,
-                textAlign: 'center', lineHeight: 1.6
+                fontFamily: 'var(--font)', marginBottom: 32,
+                maxWidth: 420, margin: '0 auto 32px auto',
+                textAlign: 'center', lineHeight: 1.7
               }}>
                 5-day weather forecasts powered by real data.
                 Enter any US ZIP code to get started.
               </p>
-              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 0 }}>
                 {['10001 · New York', '90210 · Beverly Hills', '60601 · Chicago', '98101 · Seattle'].map(z => (
                   <span key={z} style={{
                     padding: '6px 16px', borderRadius: 999,
