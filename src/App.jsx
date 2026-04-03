@@ -1,0 +1,859 @@
+import { useState, useEffect, useRef } from 'react'
+
+// ─── Builder.io brand mark ───────────────────────────────────
+function BuilderMark({ size = 20 }) {
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', gap: 8,
+      fontFamily: 'var(--font)', fontWeight: 700, fontSize: size,
+      color: 'var(--white)', letterSpacing: '-0.02em'
+    }}>
+      <span style={{
+        display: 'inline-block', width: 4, height: size * 1.1,
+        background: 'linear-gradient(180deg, var(--purpleL), var(--pink))',
+        borderRadius: 2, flexShrink: 0
+      }} />
+      builder.io
+    </span>
+  )
+}
+
+// ─── Gradient bar ────────────────────────────────────────────
+function GradBar({ style = {} }) {
+  return (
+    <div style={{
+      height: 2, width: '100%',
+      background: 'linear-gradient(90deg, var(--purple), var(--purpleL), var(--pink))',
+      ...style
+    }} />
+  )
+}
+
+// ─── Section label ───────────────────────────────────────────
+function Label({ children }) {
+  return (
+    <p style={{
+      fontFamily: 'var(--font)', fontSize: 11, fontWeight: 700,
+      color: 'var(--purpleL)', letterSpacing: '0.2em',
+      textTransform: 'uppercase', marginBottom: 12
+    }}>{children}</p>
+  )
+}
+
+// ─── Card ────────────────────────────────────────────────────
+function Card({ children, style = {}, hover = true }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => hover && setHov(true)}
+      onMouseLeave={() => hover && setHov(false)}
+      style={{
+        background: 'var(--dark2)',
+        border: `1px solid ${hov ? 'rgba(124,58,237,0.5)' : 'var(--gray3)'}`,
+        borderRadius: 12,
+        transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
+        transform: hov ? 'translateY(-2px)' : 'none',
+        boxShadow: hov ? '0 8px 32px rgba(124,58,237,0.15)' : 'none',
+        ...style
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+// ─── Pill badge ──────────────────────────────────────────────
+function Pill({ children, color = 'var(--purpleL)', bg = 'rgba(124,58,237,0.1)' }) {
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      padding: '4px 12px', borderRadius: 999,
+      background: bg, color, fontSize: 12, fontWeight: 600,
+      fontFamily: 'var(--font)', border: `1px solid ${color}33`,
+      letterSpacing: '0.01em'
+    }}>{children}</span>
+  )
+}
+
+// ─── Nav ─────────────────────────────────────────────────────
+function Nav() {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', h)
+    return () => window.removeEventListener('scroll', h)
+  }, [])
+
+  const links = [
+    { label: 'App', href: '#app' },
+    { label: 'Demo', href: '#demo' },
+    { label: 'Architecture', href: '#architecture' },
+    { label: 'Components', href: '#components' },
+    { label: 'Docs', href: '#docs' },
+  ]
+
+  return (
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      background: scrolled ? 'rgba(10,10,10,0.9)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(12px)' : 'none',
+      borderBottom: scrolled ? '1px solid var(--gray3)' : '1px solid transparent',
+      transition: 'all 0.3s',
+      padding: '0 32px',
+    }}>
+      <div style={{
+        maxWidth: 1100, margin: '0 auto',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        height: 64
+      }}>
+        <BuilderMark size={16} />
+        <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+          {links.map(l => (
+            <a key={l.href} href={l.href} style={{
+              color: 'var(--gray1)', fontSize: 14, fontWeight: 500,
+              textDecoration: 'none', fontFamily: 'var(--font)',
+              transition: 'color 0.15s'
+            }}
+              onMouseEnter={e => e.target.style.color = 'var(--white)'}
+              onMouseLeave={e => e.target.style.color = 'var(--gray1)'}
+            >{l.label}</a>
+          ))}
+          <a
+            href="https://github.com/jasomoss/forecast4u"
+            target="_blank" rel="noreferrer"
+            style={{
+              padding: '8px 20px', borderRadius: 8,
+              background: 'linear-gradient(135deg, var(--purple), var(--pink))',
+              color: 'var(--white)', fontSize: 13, fontWeight: 600,
+              textDecoration: 'none', fontFamily: 'var(--font)',
+              transition: 'opacity 0.15s'
+            }}
+            onMouseEnter={e => e.target.style.opacity = '0.85'}
+            onMouseLeave={e => e.target.style.opacity = '1'}
+          >GitHub →</a>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+// ─── Hero Section ────────────────────────────────────────────
+function Hero() {
+  return (
+    <section style={{
+      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '120px 32px 80px',
+      position: 'relative', overflow: 'hidden',
+      textAlign: 'center'
+    }}>
+      {/* Radial glow backgrounds */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 0,
+        background: `
+          radial-gradient(ellipse 60% 50% at 15% 40%, rgba(124,58,237,0.18) 0%, transparent 70%),
+          radial-gradient(ellipse 50% 45% at 85% 65%, rgba(236,72,153,0.12) 0%, transparent 70%)
+        `
+      }} />
+      {/* Grid pattern */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.03,
+        backgroundImage: 'linear-gradient(var(--gray1) 1px, transparent 1px), linear-gradient(90deg, var(--gray1) 1px, transparent 1px)',
+        backgroundSize: '60px 60px'
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 1, maxWidth: 820 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 28 }}>
+          <Pill>⚡ Built in 24 hours · Deployed & live</Pill>
+        </div>
+
+        <h1 style={{
+          fontSize: 'clamp(48px, 8vw, 86px)', fontWeight: 900,
+          fontFamily: 'var(--font)', lineHeight: 1.05,
+          letterSpacing: '-0.03em', color: 'var(--white)',
+          marginBottom: 12
+        }}>
+          Forecast4U
+        </h1>
+
+        <h2 className="grad-text" style={{
+          fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 800,
+          fontFamily: 'var(--font)', lineHeight: 1.1,
+          letterSpacing: '-0.02em', marginBottom: 28
+        }}>
+          × Builder.io POV
+        </h2>
+
+        <p style={{
+          fontSize: 18, color: 'var(--gray1)', maxWidth: 560,
+          lineHeight: 1.7, margin: '0 auto 48px',
+          fontFamily: 'var(--font)'
+        }}>
+          A proof-of-value prototype demonstrating how Builder.io's visual development
+          platform — powered by IBM Carbon — can transform how Forecast4U ships UI.
+        </p>
+
+        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a href="#app" style={{
+            padding: '14px 32px', borderRadius: 10,
+            background: 'linear-gradient(135deg, var(--purple), var(--pink))',
+            color: 'var(--white)', fontSize: 15, fontWeight: 700,
+            textDecoration: 'none', fontFamily: 'var(--font)',
+            boxShadow: '0 0 32px rgba(124,58,237,0.3)',
+            transition: 'all 0.2s'
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 40px rgba(124,58,237,0.4)' }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 0 32px rgba(124,58,237,0.3)' }}
+          >
+            View the App →
+          </a>
+          <a href="https://github.com/jasomoss/forecast4u" target="_blank" rel="noreferrer"
+            style={{
+              padding: '14px 32px', borderRadius: 10,
+              border: '1px solid var(--gray3)',
+              background: 'var(--dark2)',
+              color: 'var(--white)', fontSize: 15, fontWeight: 600,
+              textDecoration: 'none', fontFamily: 'var(--font)',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--purpleL)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--gray3)' }}
+          >
+            GitHub Repo
+          </a>
+        </div>
+
+        {/* Stats row */}
+        <div style={{
+          display: 'flex', gap: 40, justifyContent: 'center',
+          marginTop: 72, flexWrap: 'wrap'
+        }}>
+          {[
+            { val: '34', label: 'Unit Tests' },
+            { val: '5-day', label: 'Forecast' },
+            { val: '0', label: 'API Keys' },
+            { val: 'Carbon', label: 'Design System' },
+          ].map(s => (
+            <div key={s.val} style={{ textAlign: 'center' }}>
+              <div className="grad-text" style={{
+                fontSize: 32, fontWeight: 800, fontFamily: 'var(--font)',
+                letterSpacing: '-0.02em', lineHeight: 1
+              }}>{s.val}</div>
+              <div style={{ fontSize: 12, color: 'var(--gray1)', marginTop: 4, fontFamily: 'var(--font)' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <GradBar style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }} />
+    </section>
+  )
+}
+
+// ─── App Preview Section ─────────────────────────────────────
+function AppSection() {
+  return (
+    <section id="app" style={{ padding: '100px 32px', position: 'relative' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <Label>Live Prototype</Label>
+        <h2 style={{
+          fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
+          fontFamily: 'var(--font)', color: 'var(--white)',
+          letterSpacing: '-0.02em', marginBottom: 16, lineHeight: 1.1
+        }}>Try it yourself.</h2>
+        <p style={{
+          fontSize: 16, color: 'var(--gray1)', maxWidth: 480,
+          lineHeight: 1.7, marginBottom: 48, fontFamily: 'var(--font)'
+        }}>
+          Enter any US ZIP code to get a real 5-day forecast in 3-hour intervals.
+          Built with IBM Carbon, deployed on Vercel.
+        </p>
+
+        {/* Browser chrome wrapper */}
+        <Card hover={false} style={{ overflow: 'hidden', borderRadius: 16 }}>
+          {/* Browser bar */}
+          <div style={{
+            background: 'var(--dark3)', padding: '12px 20px',
+            display: 'flex', alignItems: 'center', gap: 12,
+            borderBottom: '1px solid var(--gray3)'
+          }}>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {['#EF4444','#F59E0B','#22C55E'].map(c => (
+                <div key={c} style={{ width: 12, height: 12, borderRadius: '50%', background: c }} />
+              ))}
+            </div>
+            <div style={{
+              flex: 1, background: 'var(--dark2)', borderRadius: 6,
+              padding: '5px 12px', display: 'flex', alignItems: 'center', gap: 8
+            }}>
+              <span style={{ fontSize: 11, color: 'var(--green)', fontFamily: 'var(--mono)' }}>🔒</span>
+              <span style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--mono)' }}>
+                forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app
+              </span>
+            </div>
+          </div>
+          {/* Iframe */}
+          <iframe
+            src="https://forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app"
+            style={{ width: '100%', height: 600, border: 'none', display: 'block' }}
+            title="Forecast4U Live App"
+          />
+        </Card>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+          <a
+            href="https://forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app"
+            target="_blank" rel="noreferrer"
+            style={{
+              padding: '10px 24px', borderRadius: 8,
+              border: '1px solid var(--gray3)', background: 'transparent',
+              color: 'var(--purpleL)', fontSize: 13, fontWeight: 600,
+              textDecoration: 'none', fontFamily: 'var(--font)',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--purpleL)'; e.currentTarget.style.background = 'rgba(124,58,237,0.08)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--gray3)'; e.currentTarget.style.background = 'transparent' }}
+          >Open in new tab ↗</a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Demo Video Section ──────────────────────────────────────
+function DemoSection({ loomUrl }) {
+  const hasLoom = loomUrl && loomUrl.trim() !== ''
+  // Convert share URL to embed URL
+  const embedUrl = hasLoom
+    ? loomUrl.replace('loom.com/share/', 'loom.com/embed/').split('?')[0]
+    : null
+
+  return (
+    <section id="demo" style={{
+      padding: '100px 32px',
+      background: 'linear-gradient(180deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%)'
+    }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <Label>Walkthrough</Label>
+        <h2 style={{
+          fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
+          fontFamily: 'var(--font)', color: 'var(--white)',
+          letterSpacing: '-0.02em', marginBottom: 16, lineHeight: 1.1
+        }}>Watch the demo.</h2>
+        <p style={{
+          fontSize: 16, color: 'var(--gray1)', maxWidth: 520,
+          lineHeight: 1.7, marginBottom: 48, fontFamily: 'var(--font)'
+        }}>
+          A full walkthrough of the prototype, architecture, unit tests, and
+          Storybook — narrated as a live POV kickoff session.
+        </p>
+
+        <Card hover={false} style={{ overflow: 'hidden', borderRadius: 16 }}>
+          {hasLoom ? (
+            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+              <iframe
+                src={embedUrl}
+                allowFullScreen
+                style={{
+                  position: 'absolute', top: 0, left: 0,
+                  width: '100%', height: '100%', border: 'none'
+                }}
+                title="Forecast4U Demo Walkthrough"
+              />
+            </div>
+          ) : (
+            <div style={{
+              height: 480, display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', gap: 20,
+              background: 'var(--dark2)'
+            }}>
+              {/* Play button */}
+              <div style={{
+                width: 80, height: 80, borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--purple), var(--pink))',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 0 40px rgba(124,58,237,0.4)',
+                cursor: 'pointer'
+              }}>
+                <div style={{
+                  width: 0, height: 0, marginLeft: 6,
+                  borderTop: '14px solid transparent',
+                  borderBottom: '14px solid transparent',
+                  borderLeft: '22px solid white'
+                }} />
+              </div>
+              <p style={{
+                color: 'var(--gray1)', fontSize: 15, fontFamily: 'var(--font)',
+                textAlign: 'center', maxWidth: 320, lineHeight: 1.6
+              }}>
+                Demo video coming soon.<br />
+                <span style={{ color: 'var(--purpleL)', fontSize: 13 }}>
+                  Recording in progress via Loom
+                </span>
+              </p>
+            </div>
+          )}
+        </Card>
+      </div>
+    </section>
+  )
+}
+
+// ─── Architecture Section ────────────────────────────────────
+function ArchSection() {
+  const layers = [
+    {
+      label: 'Data Layer', color: 'var(--green)',
+      icon: '🗄️',
+      items: ['Open-Meteo API', 'Zippopotam.us geocoding', '5-day / 3-hr intervals', 'No API keys required']
+    },
+    {
+      label: 'Application Layer', color: 'var(--purpleL)',
+      icon: '⚛️',
+      items: ['React + Vite', 'React Router v7', 'useWeather custom hook', '34 Vitest unit tests']
+    },
+    {
+      label: 'Presentation Layer', color: 'var(--pink)',
+      icon: '🎨',
+      items: ['IBM Carbon design system', 'Builder.io component index', 'Fusion AI agent', 'Storybook library']
+    },
+  ]
+
+  const tools = [
+    { name: 'React', color: '#61DAFB' },
+    { name: 'Vite', color: '#646CFF' },
+    { name: 'Builder.io', color: '#8B5CF6' },
+    { name: 'IBM Carbon', color: '#0F62FE' },
+    { name: 'Vitest', color: '#6E9F18' },
+    { name: 'Storybook', color: '#FF4785' },
+    { name: 'Vercel', color: '#FFFFFF' },
+    { name: 'GitHub', color: '#A1A1AA' },
+  ]
+
+  return (
+    <section id="architecture" style={{ padding: '100px 32px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <Label>Technical Architecture</Label>
+        <h2 style={{
+          fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
+          fontFamily: 'var(--font)', color: 'var(--white)',
+          letterSpacing: '-0.02em', marginBottom: 16, lineHeight: 1.1
+        }}>How it's built.</h2>
+        <p style={{
+          fontSize: 16, color: 'var(--gray1)', maxWidth: 480,
+          lineHeight: 1.7, marginBottom: 64, fontFamily: 'var(--font)'
+        }}>
+          Three clean layers. Every architectural decision maps back to the
+          Builder.io platform's strengths.
+        </p>
+
+        {/* 3-column layer grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, marginBottom: 64 }}>
+          {layers.map(layer => (
+            <Card key={layer.label} style={{ padding: '28px 28px 32px' }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20
+              }}>
+                <div style={{
+                  width: 4, height: 32, borderRadius: 2,
+                  background: layer.color, flexShrink: 0
+                }} />
+                <div>
+                  <div style={{ fontSize: 18, marginBottom: 2 }}>{layer.icon}</div>
+                  <div style={{
+                    fontSize: 14, fontWeight: 700, color: 'var(--white)',
+                    fontFamily: 'var(--font)'
+                  }}>{layer.label}</div>
+                </div>
+              </div>
+              {layer.items.map(item => (
+                <div key={item} style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  padding: '8px 0', borderBottom: '1px solid var(--gray3)'
+                }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: layer.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: 'var(--zinc300)', fontFamily: 'var(--font)' }}>{item}</span>
+                </div>
+              ))}
+            </Card>
+          ))}
+        </div>
+
+        {/* Tech stack pills */}
+        <div style={{ textAlign: 'center' }}>
+          <p style={{
+            fontSize: 12, color: 'var(--gray2)', letterSpacing: '0.15em',
+            textTransform: 'uppercase', marginBottom: 20, fontFamily: 'var(--font)'
+          }}>Tech Stack</p>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {tools.map(t => (
+              <Pill key={t.name} color={t.color} bg={`${t.color}15`}>{t.name}</Pill>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Components Section ──────────────────────────────────────
+function ComponentsSection() {
+  const [size, setSize] = useState('lg')
+  const [condition, setCondition] = useState({ icon: '⛅', label: 'Partly Cloudy', temp: 68, feels: 65, precip: 20, wind: 12 })
+
+  const conditions = [
+    { icon: '☀️', label: 'Clear Sky', temp: 84, feels: 88, precip: 0, wind: 4 },
+    { icon: '⛅', label: 'Partly Cloudy', temp: 68, feels: 65, precip: 20, wind: 12 },
+    { icon: '🌧️', label: 'Rain', temp: 52, feels: 48, precip: 75, wind: 18 },
+    { icon: '❄️', label: 'Heavy Snow', temp: 28, feels: 18, precip: 85, wind: 22 },
+    { icon: '⛈️', label: 'Thunderstorm', temp: 58, feels: 54, precip: 90, wind: 28 },
+  ]
+
+  const cities = [
+    { city: 'New York', zip: '10001' },
+    { city: 'Beverly Hills', zip: '90210' },
+    { city: 'Chicago', zip: '60601' },
+    { city: 'Miami', zip: '33101' },
+  ]
+
+  const sizeConfig = {
+    sm: { padding: '10px 14px', gap: 10, iconSize: 24, tempSize: 18, citySize: 12, condSize: 11 },
+    md: { padding: '14px 18px', gap: 14, iconSize: 30, tempSize: 22, citySize: 14, condSize: 12 },
+    lg: { padding: '20px 24px', gap: 18, iconSize: 40, tempSize: 30, citySize: 16, condSize: 14 },
+  }
+  const cfg = sizeConfig[size]
+
+  return (
+    <section id="components" style={{
+      padding: '100px 32px',
+      background: 'linear-gradient(180deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%)'
+    }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <Label>Custom Component</Label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 24, marginBottom: 48 }}>
+          <div>
+            <h2 style={{
+              fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
+              fontFamily: 'var(--font)', color: 'var(--white)',
+              letterSpacing: '-0.02em', marginBottom: 12, lineHeight: 1.1
+            }}>WeatherSummaryBadge</h2>
+            <p style={{
+              fontSize: 16, color: 'var(--gray1)', maxWidth: 480,
+              lineHeight: 1.7, fontFamily: 'var(--font)'
+            }}>
+              A custom component built on IBM Carbon tokens. Lives on the{' '}
+              <code style={{ color: 'var(--purpleL)', fontFamily: 'var(--mono)', fontSize: 14 }}>
+                feature/weather-summary-badge
+              </code>{' '}branch.
+            </p>
+          </div>
+          <Pill color="var(--green)" bg="rgba(34,197,94,0.1)">✓ feature branch pushed</Pill>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' }}>
+          {/* Live interactive demo */}
+          <Card style={{ padding: 32 }} hover={false}>
+            <p style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--font)', marginBottom: 24, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Interactive Demo</p>
+
+            {/* Controls */}
+            <div style={{ marginBottom: 28 }}>
+              <p style={{ fontSize: 12, color: 'var(--gray2)', fontFamily: 'var(--font)', marginBottom: 10 }}>Size</p>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {['sm', 'md', 'lg'].map(s => (
+                  <button key={s} onClick={() => setSize(s)} style={{
+                    padding: '6px 18px', borderRadius: 6, cursor: 'pointer',
+                    fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 600,
+                    background: size === s ? 'var(--purple)' : 'var(--dark3)',
+                    color: size === s ? 'var(--white)' : 'var(--gray1)',
+                    border: `1px solid ${size === s ? 'var(--purple)' : 'var(--gray3)'}`,
+                    transition: 'all 0.15s'
+                  }}>{s}</button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 12, color: 'var(--gray2)', fontFamily: 'var(--font)', marginBottom: 10 }}>Condition</p>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {conditions.map(c => (
+                  <button key={c.label} onClick={() => setCondition(c)} style={{
+                    padding: '6px 12px', borderRadius: 6, cursor: 'pointer',
+                    fontFamily: 'var(--font)', fontSize: 12,
+                    background: condition.label === c.label ? 'rgba(124,58,237,0.15)' : 'var(--dark3)',
+                    color: condition.label === c.label ? 'var(--purpleL)' : 'var(--gray1)',
+                    border: `1px solid ${condition.label === c.label ? 'var(--purpleL)' : 'var(--gray3)'}`,
+                    transition: 'all 0.15s'
+                  }}>{c.icon} {c.label}</button>
+                ))}
+              </div>
+            </div>
+
+            {/* Live badge preview */}
+            <div style={{
+              background: 'var(--dark)', borderRadius: 10, padding: 24,
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              minHeight: 120, border: '1px solid var(--gray3)'
+            }}>
+              {/* Simulated WeatherSummaryBadge */}
+              <div style={{
+                display: 'inline-flex', alignItems: 'center',
+                gap: cfg.gap, padding: cfg.padding,
+                background: '#f4f4f4', borderRadius: 6,
+                border: '1px solid #e0e0e0', minWidth: 180
+              }}>
+                <span style={{ fontSize: cfg.iconSize }}>{condition.icon}</span>
+                <div>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'baseline', marginBottom: 2 }}>
+                    <span style={{ fontSize: cfg.citySize, fontWeight: 600, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>New York</span>
+                    <span style={{ fontSize: cfg.citySize - 2, color: '#6f6f6f', fontFamily: 'IBM Plex Sans, sans-serif' }}>10001</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'baseline', marginBottom: 2 }}>
+                    <span style={{ fontSize: cfg.tempSize, fontWeight: 700, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>{condition.temp}°F</span>
+                    <span style={{ fontSize: cfg.condSize, color: '#525252', fontFamily: 'IBM Plex Sans, sans-serif' }}>Feels {condition.feels}°</span>
+                  </div>
+                  <span style={{ fontSize: cfg.condSize, color: '#525252', fontFamily: 'IBM Plex Sans, sans-serif' }}>{condition.label}</span>
+                  {size === 'lg' && (
+                    <div style={{ display: 'flex', gap: 4, marginTop: 8, flexWrap: 'wrap' }}>
+                      <span style={{ padding: '2px 8px', background: '#dde1ff', color: '#0043ce', fontSize: 11, borderRadius: 99, fontFamily: 'IBM Plex Sans, sans-serif' }}>💧 {condition.precip}%</span>
+                      <span style={{ padding: '2px 8px', background: '#e0e0e0', color: '#393939', fontSize: 11, borderRadius: 99, fontFamily: 'IBM Plex Sans, sans-serif' }}>💨 {condition.wind} mph</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Multiple locations */}
+          <Card style={{ padding: 32 }} hover={false}>
+            <p style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--font)', marginBottom: 24, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Dashboard Use Case</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {cities.map((city, i) => {
+                const c = conditions[i % conditions.length]
+                return (
+                  <div key={city.zip} style={{
+                    display: 'flex', alignItems: 'center', gap: 14,
+                    padding: '14px 18px', background: '#f4f4f4',
+                    borderRadius: 6, border: '1px solid #e0e0e0'
+                  }}>
+                    <span style={{ fontSize: 26 }}>{c.icon}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>{city.city}</span>
+                        <span style={{ fontSize: 11, color: '#6f6f6f', fontFamily: 'IBM Plex Sans, sans-serif' }}>{city.zip}</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: '#525252', fontFamily: 'IBM Plex Sans, sans-serif' }}>{c.label}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 20, fontWeight: 700, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>{c.temp}°</div>
+                      <div style={{ fontSize: 11, color: '#6f6f6f', fontFamily: 'IBM Plex Sans, sans-serif' }}>Feels {c.feels}°</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </Card>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Docs Section ────────────────────────────────────────────
+function DocsSection() {
+  const docs = [
+    {
+      icon: '📊',
+      title: 'POV Kickoff Deck',
+      desc: 'Full Builder.io-branded presentation deck for stakeholder kickoff. Architecture, success criteria, next steps.',
+      tag: '9 slides',
+      color: 'var(--purpleL)',
+      href: '#'
+    },
+    {
+      icon: '🎤',
+      title: 'Demo Walkthrough Script',
+      desc: 'Scene-by-scene guide for the peer review session. SAY / DO / PAUSE format. Runs 20-25 minutes.',
+      tag: '6 scenes',
+      color: 'var(--pink)',
+      href: '#'
+    },
+    {
+      icon: '📐',
+      title: 'Component Spec',
+      desc: 'Full design system artifact for WeatherSummaryBadge — anatomy, props, Carbon tokens, accessibility, stories.',
+      tag: 'feature/weather-summary-badge',
+      color: 'var(--green)',
+      href: '#'
+    },
+  ]
+
+  return (
+    <section id="docs" style={{ padding: '100px 32px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <Label>Deliverables</Label>
+        <h2 style={{
+          fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
+          fontFamily: 'var(--font)', color: 'var(--white)',
+          letterSpacing: '-0.02em', marginBottom: 16, lineHeight: 1.1
+        }}>Everything, in one place.</h2>
+        <p style={{
+          fontSize: 16, color: 'var(--gray1)', maxWidth: 480,
+          lineHeight: 1.7, marginBottom: 64, fontFamily: 'var(--font)'
+        }}>
+          All supporting materials — built to the same standard as the prototype.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+          {docs.map(doc => (
+            <Card key={doc.title} style={{ padding: '28px 28px 32px' }}>
+              <div style={{ fontSize: 32, marginBottom: 16 }}>{doc.icon}</div>
+              <Pill color={doc.color} bg={`${doc.color}15`} style={{ marginBottom: 16 }}>{doc.tag}</Pill>
+              <h3 style={{
+                fontSize: 18, fontWeight: 700, color: 'var(--white)',
+                fontFamily: 'var(--font)', marginBottom: 10, marginTop: 12
+              }}>{doc.title}</h3>
+              <p style={{
+                fontSize: 13, color: 'var(--gray1)', lineHeight: 1.7,
+                fontFamily: 'var(--font)', marginBottom: 24
+              }}>{doc.desc}</p>
+              <a href={doc.href} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                fontSize: 13, fontWeight: 600, color: doc.color,
+                fontFamily: 'var(--font)', textDecoration: 'none',
+                transition: 'gap 0.15s'
+              }}
+                onMouseEnter={e => e.currentTarget.style.gap = '10px'}
+                onMouseLeave={e => e.currentTarget.style.gap = '6px'}
+              >Download → </a>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── About / Closing Section ──────────────────────────────────
+function AboutSection() {
+  return (
+    <section style={{
+      padding: '100px 32px 80px',
+      position: 'relative', overflow: 'hidden'
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: `
+          radial-gradient(ellipse 50% 60% at 80% 50%, rgba(124,58,237,0.12) 0%, transparent 70%),
+          radial-gradient(ellipse 40% 50% at 20% 50%, rgba(236,72,153,0.08) 0%, transparent 70%)
+        `
+      }} />
+
+      <GradBar style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
+
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{
+          display: 'grid', gridTemplateColumns: '1fr 1fr',
+          gap: 80, alignItems: 'center'
+        }}>
+          <div>
+            <Label>About</Label>
+            <h2 style={{
+              fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 800,
+              fontFamily: 'var(--font)', color: 'var(--white)',
+              letterSpacing: '-0.02em', marginBottom: 24, lineHeight: 1.1
+            }}>Built by Jason Moss.</h2>
+            <p style={{
+              fontSize: 16, color: 'var(--gray1)', lineHeight: 1.8,
+              fontFamily: 'var(--font)', marginBottom: 20
+            }}>
+              VP of Sales Engineering at Stylitics. Previously the founding SE at Yotpo,
+              where I built the SE org from zero to nine people globally across five
+              time zones.
+            </p>
+            <p style={{
+              fontSize: 16, color: 'var(--gray1)', lineHeight: 1.8,
+              fontFamily: 'var(--font)', marginBottom: 36
+            }}>
+              This prototype was built in response to Alexis Kulash's outreach about
+              the Enterprise SE role at Builder.io. The goal: demonstrate not just
+              that I can complete a checklist — but that I understand why each piece
+              matters in a real enterprise POV.
+            </p>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <a href="mailto:jason.moss@stylitics.com" style={{
+                padding: '12px 28px', borderRadius: 8,
+                background: 'linear-gradient(135deg, var(--purple), var(--pink))',
+                color: 'var(--white)', fontSize: 14, fontWeight: 600,
+                textDecoration: 'none', fontFamily: 'var(--font)'
+              }}>Get in touch</a>
+              <a href="https://www.linkedin.com/in/jasonmoss" target="_blank" rel="noreferrer"
+                style={{
+                  padding: '12px 28px', borderRadius: 8,
+                  border: '1px solid var(--gray3)', background: 'var(--dark2)',
+                  color: 'var(--white)', fontSize: 14, fontWeight: 600,
+                  textDecoration: 'none', fontFamily: 'var(--font)'
+                }}>LinkedIn ↗</a>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {[
+              { label: 'Role', val: 'VP of Sales Engineering' },
+              { label: 'Current Company', val: 'Stylitics' },
+              { label: 'SE Experience', val: '11+ years enterprise SaaS' },
+              { label: 'Notable', val: 'Founding SE at Yotpo (0→9 globally)' },
+              { label: 'GitHub', val: 'github.com/jasomoss/forecast4u' },
+              { label: 'Live App', val: 'forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app' },
+            ].map(item => (
+              <div key={item.label} style={{
+                display: 'flex', justifyContent: 'space-between',
+                padding: '12px 0', borderBottom: '1px solid var(--gray3)',
+                gap: 16
+              }}>
+                <span style={{ fontSize: 13, color: 'var(--gray2)', fontFamily: 'var(--font)', flexShrink: 0 }}>{item.label}</span>
+                <span style={{ fontSize: 13, color: 'var(--zinc300)', fontFamily: 'var(--mono)', textAlign: 'right' }}>{item.val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Footer ──────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer style={{
+      padding: '32px', borderTop: '1px solid var(--gray3)',
+      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+      flexWrap: 'wrap', gap: 16, maxWidth: 1100, margin: '0 auto'
+    }}>
+      <BuilderMark size={14} />
+      <p style={{ fontSize: 12, color: 'var(--gray2)', fontFamily: 'var(--font)' }}>
+        Forecast4U × Builder.io  ·  Jason Moss  ·  April 2026
+      </p>
+      <GradBar style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2 }} />
+    </footer>
+  )
+}
+
+// ─── Main App ────────────────────────────────────────────────
+export default function App() {
+  // Drop your Loom URL here once recorded
+  const LOOM_URL = ''
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'var(--black)' }}>
+      <Nav />
+      <Hero />
+      <AppSection />
+      <DemoSection loomUrl={LOOM_URL} />
+      <ArchSection />
+      <ComponentsSection />
+      <DocsSection />
+      <AboutSection />
+      <Footer />
+    </div>
+  )
+}
