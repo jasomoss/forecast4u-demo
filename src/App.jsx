@@ -86,7 +86,6 @@ function Nav() {
 
   const links = [
     { label: 'App', href: '#app' },
-    { label: 'Demo', href: '#demo' },
     { label: 'Architecture', href: '#architecture' },
     { label: 'Components', href: '#components' },
     { label: 'Docs', href: '#docs' },
@@ -315,85 +314,6 @@ function AppSection() {
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--gray3)'; e.currentTarget.style.background = 'transparent' }}
           >Open in new tab ↗</a>
         </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Demo Video Section ──────────────────────────────────────
-function DemoSection({ loomUrl }) {
-  const hasLoom = loomUrl && loomUrl.trim() !== ''
-  // Convert share URL to embed URL
-  const embedUrl = hasLoom
-    ? loomUrl.replace('loom.com/share/', 'loom.com/embed/').split('?')[0]
-    : null
-
-  return (
-    <section id="demo" style={{
-      padding: '100px 32px',
-      background: 'linear-gradient(180deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%)'
-    }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <Label>Walkthrough</Label>
-        <h2 style={{
-          fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 800,
-          fontFamily: 'var(--font)', color: 'var(--white)',
-          letterSpacing: '-0.02em', marginBottom: 16, lineHeight: 1.1
-        }}>Watch the demo.</h2>
-        <p style={{
-          fontSize: 16, color: 'var(--gray1)', maxWidth: 520,
-          lineHeight: 1.7, marginBottom: 48, fontFamily: 'var(--font)'
-        }}>
-          A full walkthrough of the prototype, architecture, unit tests, and
-          Storybook — narrated as a live POV kickoff session.
-        </p>
-
-        <Card hover={false} style={{ overflow: 'hidden', borderRadius: 16 }}>
-          {hasLoom ? (
-            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-              <iframe
-                src={embedUrl}
-                allowFullScreen
-                style={{
-                  position: 'absolute', top: 0, left: 0,
-                  width: '100%', height: '100%', border: 'none'
-                }}
-                title="Forecast4U Demo Walkthrough"
-              />
-            </div>
-          ) : (
-            <div style={{
-              height: 480, display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center', gap: 20,
-              background: 'var(--dark2)'
-            }}>
-              {/* Play button */}
-              <div style={{
-                width: 80, height: 80, borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--purple), var(--pink))',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 0 40px rgba(124,58,237,0.4)',
-                cursor: 'pointer'
-              }}>
-                <div style={{
-                  width: 0, height: 0, marginLeft: 6,
-                  borderTop: '14px solid transparent',
-                  borderBottom: '14px solid transparent',
-                  borderLeft: '22px solid white'
-                }} />
-              </div>
-              <p style={{
-                color: 'var(--gray1)', fontSize: 15, fontFamily: 'var(--font)',
-                textAlign: 'center', maxWidth: 320, lineHeight: 1.6
-              }}>
-                Demo video coming soon.<br />
-                <span style={{ color: 'var(--purpleL)', fontSize: 13 }}>
-                  Recording in progress via Loom
-                </span>
-              </p>
-            </div>
-          )}
-        </Card>
       </div>
     </section>
   )
@@ -840,15 +760,11 @@ function Footer() {
 
 // ─── Main App ────────────────────────────────────────────────
 export default function App() {
-  // Drop your Loom URL here once recorded
-  const LOOM_URL = ''
-
   return (
     <div style={{ minHeight: '100vh', background: 'var(--black)' }}>
       <Nav />
       <Hero />
       <AppSection />
-      <DemoSection loomUrl={LOOM_URL} />
       <ArchSection />
       <ComponentsSection />
       <DocsSection />
