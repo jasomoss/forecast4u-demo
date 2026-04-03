@@ -540,16 +540,17 @@ function ComponentsSection() {
 
             {/* Live badge preview */}
             <div style={{
-              background: 'var(--dark)', borderRadius: 10, padding: 24,
+              background: 'var(--dark)', borderRadius: 10, padding: 0,
               display: 'flex', justifyContent: 'center', alignItems: 'center',
-              minHeight: 120, border: '1px solid var(--gray3)'
+              minHeight: 120, border: '1px solid var(--gray3)', overflow: 'hidden'
             }}>
               {/* Simulated WeatherSummaryBadge */}
               <div style={{
                 display: 'flex', alignItems: 'center',
                 gap: cfg.gap, padding: cfg.padding,
-                background: '#f4f4f4', borderRadius: 6,
-                border: '1px solid #e0e0e0', width: '100%'
+                background: '#f4f4f4', borderRadius: 0,
+                border: 'none', width: '100%', height: '100%',
+                minHeight: 120
               }}>
                 <span style={{ fontSize: cfg.iconSize }}>{condition.icon}</span>
                 <div>
