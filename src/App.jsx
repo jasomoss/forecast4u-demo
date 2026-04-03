@@ -287,13 +287,13 @@ function AppSection() {
             }}>
               <span style={{ fontSize: 11, color: 'var(--green)', fontFamily: 'var(--mono)' }}>🔒</span>
               <span style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--mono)' }}>
-                forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app
+                forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app
               </span>
             </div>
           </div>
           {/* Iframe */}
           <iframe
-            src="https://forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app"
+            src="https://forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app"
             style={{ width: '100%', height: 600, border: 'none', display: 'block' }}
             title="Forecast4U Live App"
           />
@@ -301,7 +301,7 @@ function AppSection() {
 
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
           <a
-            href="https://forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app"
+            href="https://forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app"
             target="_blank" rel="noreferrer"
             style={{
               padding: '10px 24px', borderRadius: 8,
@@ -723,7 +723,7 @@ function AboutSection() {
               { label: 'SE Experience', val: '11+ years enterprise SaaS' },
               { label: 'Notable', val: 'Founding SE at Yotpo (0→9 globally)' },
               { label: 'GitHub', val: 'github.com/jasomoss/forecast4u' },
-              { label: 'Live App', val: 'forecast4u-2wpjrtw6o-jasomoss-6152s-projects.vercel.app' },
+              { label: 'Live App', val: 'forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app' },
             ].map(item => (
               <div key={item.label} style={{
                 display: 'flex', justifyContent: 'space-between',
