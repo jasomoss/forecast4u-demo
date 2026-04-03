@@ -287,7 +287,7 @@ function AppSection() {
             }}>
               <span style={{ fontSize: 11, color: 'var(--green)', fontFamily: 'var(--mono)' }}>🔒</span>
               <span style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--mono)' }}>
-                forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app
+                forecast4u.app
               </span>
             </div>
           </div>
@@ -306,9 +306,10 @@ function AppSection() {
               }}>Forecast4U</h3>
               <p style={{
                 fontSize: 16, color: 'rgba(255,255,255,0.75)',
-                fontFamily: 'var(--font)', marginBottom: 32, maxWidth: 360
+                fontFamily: 'var(--font)', marginBottom: 32, maxWidth: 400,
+                textAlign: 'center', lineHeight: 1.6
               }}>
-                5-day weather forecasts powered by real data.<br/>
+                5-day weather forecasts powered by real data.
                 Enter any US ZIP code to get started.
               </p>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
