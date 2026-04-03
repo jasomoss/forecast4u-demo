@@ -700,13 +700,13 @@ function AboutSection() {
               matters in a real enterprise POV.
             </p>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <a href="mailto:jasomoss@gmail.com" style={{
+              <a href="mailto:jasomoss@gmail.com" target="_blank" rel="noreferrer" style={{
                 padding: '12px 28px', borderRadius: 8,
                 background: 'linear-gradient(135deg, var(--purple), var(--pink))',
                 color: 'var(--white)', fontSize: 14, fontWeight: 600,
                 textDecoration: 'none', fontFamily: 'var(--font)'
               }}>Get in touch</a>
-              <a href="https://www.linkedin.com/in/jasonmoss" target="_blank" rel="noreferrer"
+              <a href="https://www.linkedin.com/in/jasonmoss22/" target="_blank" rel="noreferrer"
                 style={{
                   padding: '12px 28px', borderRadius: 8,
                   border: '1px solid var(--gray3)', background: 'var(--dark2)',
@@ -722,6 +722,7 @@ function AboutSection() {
               { label: 'Current Company', val: 'Stylitics' },
               { label: 'SE Experience', val: '11+ years enterprise SaaS' },
               { label: 'Notable', val: 'Founding SE at Yotpo (0→9 globally)' },
+              { label: 'LinkedIn', val: 'linkedin.com/in/jasonmoss22' },
               { label: 'GitHub', val: 'github.com/jasomoss/forecast4u' },
               { label: 'Live App', val: 'forecast4u-hcrofx3ez-jasomoss-6152s-projects.vercel.app' },
             ].map(item => (
