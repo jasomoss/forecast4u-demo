@@ -689,14 +689,7 @@ function DocsSection() {
       color: 'var(--purpleL)',
       href: 'https://docs.google.com/presentation/d/1OSoBYjCyv8YyWQ3bW16Wcb_8-9GL16_TnQaGSc0v9B4/edit?usp=sharing'
     },
-    {
-      icon: '🎤',
-      title: 'Demo Walkthrough Script',
-      desc: 'Scene-by-scene guide for the peer review session. SAY / DO / PAUSE format. Runs 20-25 minutes.',
-      tag: '6 scenes',
-      color: 'var(--pink)',
-      href: 'https://docs.google.com/document/d/1RXQOHTOtn0YJLaGTm-IdpOCyylCSVof1KJNIddjORDY/edit?usp=sharing'
-    },
+
     {
       icon: '📐',
       title: 'Component Spec',
