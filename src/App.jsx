@@ -450,6 +450,7 @@ function ArchSection() {
 function ComponentsSection() {
   const [size, setSize] = useState('lg')
   const [condition, setCondition] = useState({ icon: '⛅', label: 'Partly Cloudy', temp: 68, feels: 65, precip: 20, wind: 12 })
+  const [selectedCity, setSelectedCity] = useState({ city: 'New York', zip: '10001' })
 
   const conditions = [
     { icon: '☀️', label: 'Clear Sky', temp: 84, feels: 88, precip: 0, wind: 4 },
@@ -555,8 +556,8 @@ function ComponentsSection() {
                 <span style={{ fontSize: cfg.iconSize }}>{condition.icon}</span>
                 <div>
                   <div style={{ display: 'flex', gap: 6, alignItems: 'baseline', marginBottom: 2 }}>
-                    <span style={{ fontSize: cfg.citySize, fontWeight: 600, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>New York</span>
-                    <span style={{ fontSize: cfg.citySize - 2, color: '#6f6f6f', fontFamily: 'IBM Plex Sans, sans-serif' }}>10001</span>
+                    <span style={{ fontSize: cfg.citySize, fontWeight: 600, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>{selectedCity.city}</span>
+                    <span style={{ fontSize: cfg.citySize - 2, color: '#6f6f6f', fontFamily: 'IBM Plex Sans, sans-serif' }}>{selectedCity.zip}</span>
                   </div>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'baseline', marginBottom: 2 }}>
                     <span style={{ fontSize: cfg.tempSize, fontWeight: 700, color: '#161616', fontFamily: 'IBM Plex Sans, sans-serif' }}>{condition.temp}°F</span>
@@ -576,15 +577,19 @@ function ComponentsSection() {
 
           {/* Multiple locations */}
           <Card style={{ padding: 32 }} hover={false}>
-            <p style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--font)', marginBottom: 24, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Dashboard Use Case</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+              <p style={{ fontSize: 12, color: 'var(--gray1)', fontFamily: 'var(--font)', letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>Dashboard Use Case</p>
+              <p style={{ fontSize: 11, color: 'var(--purpleL)', fontFamily: 'var(--font)', margin: 0 }}>← click to preview</p>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {cities.map((city, i) => {
                 const c = conditions[i % conditions.length]
                 return (
-                  <div key={city.zip} style={{
+                  <div key={city.zip} onClick={() => { setSelectedCity(city); setCondition(c); }} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
-                    padding: '14px 18px', background: '#f4f4f4',
-                    borderRadius: 6, border: '1px solid #e0e0e0'
+                    padding: '14px 18px', background: selectedCity.zip === city.zip ? '#e8e8ff' : '#f4f4f4',
+                    borderRadius: 6, border: `1px solid ${selectedCity.zip === city.zip ? '#a0a0ff' : '#e0e0e0'}`,
+                    cursor: 'pointer', transition: 'all 0.15s'
                   }}>
                     <span style={{ fontSize: 26 }}>{c.icon}</span>
                     <div style={{ flex: 1 }}>
