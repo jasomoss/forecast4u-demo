@@ -446,11 +446,56 @@ function ArchSection() {
   )
 }
 
+// ─── Weather helpers ─────────────────────────────────────────
+function getWeatherIcon(code) {
+  if (code === 0) return '☀️'
+  if (code <= 2) return '⛅'
+  if (code <= 3) return '☁️'
+  if (code <= 48) return '🌫️'
+  if (code <= 57) return '🌦️'
+  if (code <= 67) return '🌧️'
+  if (code <= 77) return '❄️'
+  if (code <= 82) return '🌧️'
+  if (code <= 86) return '🌨️'
+  return '⛈️'
+}
+
+function getWeatherLabel(code) {
+  if (code === 0) return 'Clear Sky'
+  if (code <= 2) return 'Partly Cloudy'
+  if (code <= 3) return 'Overcast'
+  if (code <= 48) return 'Foggy'
+  if (code <= 57) return 'Drizzle'
+  if (code <= 67) return 'Rain'
+  if (code <= 77) return 'Snow'
+  if (code <= 82) return 'Rain Showers'
+  if (code <= 86) return 'Snow Showers'
+  return 'Thunderstorm'
+}
+
+async function fetchWeather(lat, lon) {
+  const res = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph`
+  )
+  const data = await res.json()
+  const c = data.current
+  return {
+    temp: Math.round(c.temperature_2m),
+    feels: Math.round(c.apparent_temperature),
+    icon: getWeatherIcon(c.weather_code),
+    label: getWeatherLabel(c.weather_code),
+    precip: c.precipitation_probability ?? 0,
+    wind: Math.round(c.wind_speed_10m),
+  }
+}
+
 // ─── Components Section ──────────────────────────────────────
 function ComponentsSection() {
   const [size, setSize] = useState('lg')
   const [condition, setCondition] = useState({ icon: '⛅', label: 'Partly Cloudy', temp: 68, feels: 65, precip: 20, wind: 12 })
   const [selectedCity, setSelectedCity] = useState({ city: 'New York', zip: '10001' })
+  const [cityWeather, setCityWeather] = useState({})
+  const [weatherLoading, setWeatherLoading] = useState(true)
 
   const conditions = [
     { icon: '☀️', label: 'Clear Sky', temp: 84, feels: 88, precip: 0, wind: 4 },
@@ -461,11 +506,30 @@ function ComponentsSection() {
   ]
 
   const cities = [
-    { city: 'New York', zip: '10001' },
-    { city: 'Beverly Hills', zip: '90210' },
-    { city: 'Chicago', zip: '60601' },
-    { city: 'Miami', zip: '33101' },
+    { city: 'New York', zip: '10001', lat: 40.7128, lon: -74.0060 },
+    { city: 'Beverly Hills', zip: '90210', lat: 34.0736, lon: -118.4004 },
+    { city: 'Chicago', zip: '60601', lat: 41.8827, lon: -87.6233 },
+    { city: 'Miami', zip: '33101', lat: 25.7617, lon: -80.1918 },
   ]
+
+  useEffect(() => {
+    async function loadWeather() {
+      setWeatherLoading(true)
+      const results = {}
+      await Promise.all(cities.map(async city => {
+        try {
+          results[city.zip] = await fetchWeather(city.lat, city.lon)
+        } catch(e) {
+          results[city.zip] = { icon: '⛅', label: 'Partly Cloudy', temp: 68, feels: 65, precip: 20, wind: 12 }
+        }
+      }))
+      setCityWeather(results)
+      // Set initial condition to New York's real weather
+      if (results['10001']) setCondition(results['10001'])
+      setWeatherLoading(false)
+    }
+    loadWeather()
+  }, [])
 
   const sizeConfig = {
     sm: { padding: '10px 14px', gap: 10, iconSize: 24, tempSize: 18, citySize: 12, condSize: 11 },
@@ -583,7 +647,7 @@ function ComponentsSection() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {cities.map((city, i) => {
-                const c = conditions[i % conditions.length]
+                const c = cityWeather[city.zip] || { icon: '…', label: 'Loading...', temp: '--', feels: '--' }
                 return (
                   <div key={city.zip} onClick={() => { setSelectedCity(city); setCondition(c); }} style={{
                     display: 'flex', alignItems: 'center', gap: 14,
